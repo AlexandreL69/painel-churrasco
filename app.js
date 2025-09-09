@@ -38,7 +38,7 @@ document.getElementById('save-event').onclick = function () {
   alert(`Evento salvo!\n\n${evento.nome}\n${evento.data} (${getDiaSemanaLocal(evento.data)})\n${evento.horario}\n${evento.local}\n${evento.descricao}`);
 };
 
-// Adicionar participante
+// Adicionar participante numerado
 document.getElementById('add-participant').onclick = function () {
   const nome = document.getElementById('participant-name').value.trim();
   if (!nome) return;
@@ -57,7 +57,7 @@ function atualizarListaParticipantes() {
   ul.innerHTML = '';
   participantes.forEach((nome, idx) => {
     const li = document.createElement('li');
-    li.textContent = nome + ' ';
+    li.textContent = `${idx + 1}. ${nome} `; // Adiciona a numeração
     const btn = document.createElement('button');
     btn.textContent = 'Remover';
     btn.onclick = () => {

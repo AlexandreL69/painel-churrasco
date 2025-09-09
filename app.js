@@ -73,7 +73,7 @@ function atualizarListaParticipantes() {
   ul.innerHTML = '';
   participantes.forEach((nome, idx) => {
     const li = document.createElement('li');
-    li.textContent = nome + ' ';
+    li.textContent = `${idx + 1}. ${nome} `;
     const btn = document.createElement('button');
     btn.textContent = 'Remover';
     btn.className = 'green-btn';

@@ -15,49 +15,48 @@
   </header>
   <main>
     <div class="container">
-      <button id="back-events" class="back-btn" style="display:none;">← Voltar aos Eventos</button>
-      <section id="event-section">
+      <section id="event-visual">
         <h2 id="event-title">Pelada de Terça-feira</h2>
         <div class="event-info">
           <span id="event-date-info" class="event-date">2025-09-09</span> | 
           <span id="event-weekday-info" class="event-weekday">Terça-feira</span> | 
           <span id="event-location-info" class="event-location">Churrasco Eleven</span>
         </div>
-        <div class="event-edit">
-          <input type="text" id="event-name" placeholder="Nome do churrasco">
-          <input type="date" id="event-date" placeholder="Data do evento">
-          <input type="time" id="event-time" placeholder="Horário do evento">
-          <input type="text" id="event-location" placeholder="Local do evento">
-          <input type="text" id="event-desc" placeholder="Descrição do evento">
-          <button id="save-event">Salvar Evento</button>
-          <div id="weekday-output" class="weekday-output"></div>
-        </div>
-        <div class="grid">
-          <div>
-            <h3>Participantes</h3>
-            <div class="add-row">
-              <input type="text" id="participant-name" placeholder="Nome do participante">
-              <button id="add-participant" class="green-btn">Adicionar</button>
-            </div>
-            <ul id="participants-list" class="list"></ul>
-            <h4>Divisão das Despesas</h4>
-            <div id="summary-output" class="summary"></div>
-          </div>
-          <div>
-            <h3>Despesas</h3>
-            <div class="add-row">
-              <input type="text" id="expense-desc" placeholder="Descrição">
-              <input type="number" id="expense-value" placeholder="Valor" step="0.01">
-              <select id="expense-participant"></select>
-            </div>
-            <div class="who-participated" id="who-participated"></div>
-            <button id="add-expense" class="green-btn">Adicionar Despesa</button>
-            <ul id="expenses-list" class="list"></ul>
-            <h4>Resumo de Acertos</h4>
-            <div id="settle-summary" class="settle-summary"></div>
-          </div>
-        </div>
       </section>
+      <section id="event-section">
+        <input type="text" id="event-name" placeholder="Nome do churrasco">
+        <input type="date" id="event-date" placeholder="Data do evento">
+        <input type="time" id="event-time" placeholder="Horário do evento">
+        <input type="text" id="event-location" placeholder="Local do evento">
+        <input type="text" id="event-desc" placeholder="Descrição do evento">
+        <button id="save-event" class="green-btn">Salvar Evento</button>
+        <span id="weekday-output" class="weekday-output"></span>
+      </section>
+      <div class="grid">
+        <div>
+          <h3>Participantes</h3>
+          <div class="add-row">
+            <input type="text" id="participant-name" placeholder="Nome do participante">
+            <button id="add-participant" class="green-btn">Adicionar</button>
+          </div>
+          <ul id="participants-list" class="list"></ul>
+          <h4>Divisão das Despesas</h4>
+          <div id="summary-output" class="summary"></div>
+        </div>
+        <div>
+          <h3>Despesas</h3>
+          <div class="add-row">
+            <input type="text" id="expense-desc" placeholder="Descrição">
+            <input type="number" id="expense-value" placeholder="Valor" step="0.01">
+            <select id="expense-participant"></select>
+          </div>
+          <div class="who-participated" id="who-participated"></div>
+          <button id="add-expense" class="green-btn">Adicionar Despesa</button>
+          <ul id="expenses-list" class="list"></ul>
+          <h4>Resumo de Acertos</h4>
+          <div id="settle-summary" class="settle-summary"></div>
+        </div>
+      </div>
     </div>
   </main>
   <script src="app.js"></script>

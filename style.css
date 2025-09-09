@@ -40,19 +40,8 @@ body {
   padding: 32px 32px 32px 32px;
 }
 
-.back-btn {
-  margin-bottom: 24px;
-  background: #255;
-  color: #fff;
-  border: none;
-  padding: 9px 18px;
-  font-size: 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-#event-section {
-  margin-bottom: 32px;
+#event-visual {
+  margin-bottom: 18px;
 }
 
 #event-title {
@@ -64,24 +53,24 @@ body {
 .event-info {
   color: #d65f45;
   font-size: 1.09rem;
-  margin-bottom: 22px;
+  margin-bottom: 6px;
 }
 
-.event-edit {
+#event-section {
   margin-bottom: 32px;
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
 }
 
-.event-edit input, .event-edit button {
+#event-section input, #event-section button {
   padding: 7px 10px;
   font-size: 1rem;
   border-radius: 5px;
   border: 1px solid #bbb;
 }
 
-.event-edit button {
+#event-section button {
   background: #269e95;
   color: #fff;
   border: none;
@@ -89,8 +78,7 @@ body {
 }
 
 .weekday-output {
-  display: inline-block;
-  margin-left: 15px;
+  margin-left: 10px;
   color: #386;
   font-weight: bold;
 }
@@ -128,6 +116,7 @@ ul.list {
   list-style: none;
   padding-left: 0;
   margin-bottom: 14px;
+  font-size:1.08em;
 }
 
 ul.list li {
@@ -162,4 +151,10 @@ h4 {
 
 .who-participated {
   margin-bottom: 12px;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    display: block;
+  }
 }

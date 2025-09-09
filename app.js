@@ -58,7 +58,9 @@ document.getElementById('add-participant').onclick = function () {
 
 function atualizarListaParticipantes() {
   const ul = document.getElementById('participants-list');
-  ul.innerHTML = '';
+  // Trocar para <ol> para numeração automática
+  const ol = document.createElement('ol');
+  ol.className = 'list';
   participantes.forEach((nome, idx) => {
     const li = document.createElement('li');
     li.textContent = nome + ' ';
@@ -79,8 +81,10 @@ function atualizarListaParticipantes() {
       atualizarResumo();
     };
     li.appendChild(btn);
-    ul.appendChild(li);
+    ol.appendChild(li);
   });
+  ul.innerHTML = '';
+  ul.appendChild(ol);
 }
 atualizarListaParticipantes();
 

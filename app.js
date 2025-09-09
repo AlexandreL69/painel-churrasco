@@ -8,12 +8,12 @@ function getDiaSemanaLocal(dateValue) {
   return diasSemana[data.getDay()];
 }
 
-// Dados do evento
+// Dados do evento (valores iniciais podem ser vazios)
 let evento = {
-  nome: 'Pelada de Terça-feira',
-  data: '2025-09-09',
+  nome: '',
+  data: '',
   horario: '',
-  local: 'Churrasco Eleven',
+  local: '',
   descricao: ''
 };
 
@@ -23,31 +23,19 @@ let despesas = [
   // Exemplo: {desc: 'Carne', valor: 40, pagante: 'Alexandre', envolvidos: ['Alexandre', 'Bagé', 'Sandro']}
 ];
 
-// --- Exibir informações do evento no topo ---
-function atualizarCabecalhoEvento() {
-  document.getElementById('event-title').textContent = evento.nome || 'Nome do churrasco';
-  document.getElementById('event-date-info').textContent = evento.data || '';
-  document.getElementById('event-location-info').textContent = evento.local || '';
-  document.getElementById('event-weekday-info').textContent = getDiaSemanaLocal(evento.data);
-}
-
-atualizarCabecalhoEvento();
-
 // --- Atualizar "weekday-output" ao mudar data no formulário ---
 document.getElementById('event-date').addEventListener('change', function () {
   const diaSemana = getDiaSemanaLocal(this.value);
   document.getElementById('weekday-output').textContent = diaSemana ? `Dia da semana: ${diaSemana}` : '';
 });
 
-// --- Salvar informações do evento e atualizar topo ---
+// --- Salvar informações do evento (apenas armazena, não exibe no topo) ---
 document.getElementById('save-event').onclick = function () {
-  evento.nome = document.getElementById('event-name').value || evento.nome;
-  evento.data = document.getElementById('event-date').value || evento.data;
-  evento.horario = document.getElementById('event-time').value || evento.horario;
-  evento.local = document.getElementById('event-location').value || evento.local;
-  evento.descricao = document.getElementById('event-desc').value || evento.descricao;
-
-  atualizarCabecalhoEvento();
+  evento.nome = document.getElementById('event-name').value;
+  evento.data = document.getElementById('event-date').value;
+  evento.horario = document.getElementById('event-time').value;
+  evento.local = document.getElementById('event-location').value;
+  evento.descricao = document.getElementById('event-desc').value;
 
   alert(`Evento salvo!\n\n${evento.nome}\n${evento.data} (${getDiaSemanaLocal(evento.data)})\n${evento.horario}\n${evento.local}\n${evento.descricao}`);
 };
@@ -73,7 +61,7 @@ function atualizarListaParticipantes() {
   ul.innerHTML = '';
   participantes.forEach((nome, idx) => {
     const li = document.createElement('li');
-    li.textContent = `${idx + 1}. ${nome} `;
+    li.textContent = nome + ' ';
     const btn = document.createElement('button');
     btn.textContent = 'Remover';
     btn.className = 'green-btn';

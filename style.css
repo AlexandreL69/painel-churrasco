@@ -40,22 +40,6 @@ body {
   padding: 32px 32px 32px 32px;
 }
 
-#event-visual {
-  margin-bottom: 18px;
-}
-
-#event-title {
-  font-size: 2.1rem;
-  margin: 0 0 4px 0;
-  font-weight: bold;
-}
-
-.event-info {
-  color: #d65f45;
-  font-size: 1.09rem;
-  margin-bottom: 6px;
-}
-
 #event-section {
   margin-bottom: 32px;
   display: flex;
@@ -113,7 +97,7 @@ input[type="text"], input[type="number"], input[type="date"], input[type="time"]
 }
 
 ul.list {
-  list-style: none;
+  list-style: decimal inside;
   padding-left: 0;
   margin-bottom: 14px;
   font-size:1.08em;
@@ -135,6 +119,7 @@ ul.list button {
 
 .summary, .settle-summary {
   font-size: 1.01rem;
+  margin-bottom: 12px;
 }
 
 h2, h3, h4 {

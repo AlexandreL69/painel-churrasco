@@ -8,37 +8,51 @@ function getDiaSemanaLocal(dateValue) {
   return diasSemana[data.getDay()];
 }
 
-// Atualiza o campo do dia da semana ao escolher a data
+// Dados do evento
+let evento = {
+  nome: 'Pelada de Terça-feira',
+  data: '2025-09-09',
+  horario: '',
+  local: 'Churrasco Eleven',
+  descricao: ''
+};
+
+// Participantes e despesas
+let participantes = ['Alexandre', 'Bagé', 'Sandro'];
+let despesas = [
+  // Exemplo: {desc: 'Carne', valor: 40, pagante: 'Alexandre', envolvidos: ['Alexandre', 'Bagé', 'Sandro']}
+];
+
+// --- Exibir informações do evento no topo ---
+function atualizarCabecalhoEvento() {
+  document.getElementById('event-title').textContent = evento.nome || 'Nome do churrasco';
+  document.getElementById('event-date-info').textContent = evento.data || '';
+  document.getElementById('event-location-info').textContent = evento.local || '';
+  document.getElementById('event-weekday-info').textContent = getDiaSemanaLocal(evento.data);
+}
+
+atualizarCabecalhoEvento();
+
+// --- Atualizar "weekday-output" ao mudar data no formulário ---
 document.getElementById('event-date').addEventListener('change', function () {
   const diaSemana = getDiaSemanaLocal(this.value);
   document.getElementById('weekday-output').textContent = diaSemana ? `Dia da semana: ${diaSemana}` : '';
 });
 
-// Dados do evento
-let evento = {
-  nome: '',
-  data: '',
-  horario: '',
-  local: '',
-  descricao: ''
-};
-
-// Participantes e despesas
-let participantes = [];
-let despesas = [];
-
-// Salvar informações do evento
+// --- Salvar informações do evento e atualizar topo ---
 document.getElementById('save-event').onclick = function () {
-  evento.nome = document.getElementById('event-name').value;
-  evento.data = document.getElementById('event-date').value;
-  evento.horario = document.getElementById('event-time').value;
-  evento.local = document.getElementById('event-location').value;
-  evento.descricao = document.getElementById('event-desc').value;
+  evento.nome = document.getElementById('event-name').value || evento.nome;
+  evento.data = document.getElementById('event-date').value || evento.data;
+  evento.horario = document.getElementById('event-time').value || evento.horario;
+  evento.local = document.getElementById('event-location').value || evento.local;
+  evento.descricao = document.getElementById('event-desc').value || evento.descricao;
+
+  atualizarCabecalhoEvento();
 
   alert(`Evento salvo!\n\n${evento.nome}\n${evento.data} (${getDiaSemanaLocal(evento.data)})\n${evento.horario}\n${evento.local}\n${evento.descricao}`);
 };
 
-// Adicionar participante numerado
+// --- Participantes ---
 document.getElementById('add-participant').onclick = function () {
   const nome = document.getElementById('participant-name').value.trim();
   if (!nome) return;
@@ -49,6 +63,8 @@ document.getElementById('add-participant').onclick = function () {
   participantes.push(nome);
   atualizarListaParticipantes();
   atualizarSelectParticipantes();
+  atualizarQuemParticipou();
+  atualizarResumo();
   document.getElementById('participant-name').value = '';
 };
 
@@ -57,20 +73,30 @@ function atualizarListaParticipantes() {
   ul.innerHTML = '';
   participantes.forEach((nome, idx) => {
     const li = document.createElement('li');
-    li.textContent = `${idx + 1}. ${nome} `; // Adiciona a numeração
+    li.textContent = nome + ' ';
     const btn = document.createElement('button');
     btn.textContent = 'Remover';
+    btn.className = 'green-btn';
     btn.onclick = () => {
       participantes.splice(idx, 1);
+      // Remover também das despesas os que não existem mais
+      despesas.forEach(d => {
+        d.envolvidos = d.envolvidos.filter(p => participantes.includes(p));
+        if (!participantes.includes(d.pagante)) d.pagante = participantes[0] || '';
+      });
       atualizarListaParticipantes();
       atualizarSelectParticipantes();
+      atualizarQuemParticipou();
+      atualizarListaDespesas();
       atualizarResumo();
     };
     li.appendChild(btn);
     ul.appendChild(li);
   });
 }
+atualizarListaParticipantes();
 
+// --- Participantes no select do pagante ---
 function atualizarSelectParticipantes() {
   const select = document.getElementById('expense-participant');
   select.innerHTML = '';
@@ -81,8 +107,29 @@ function atualizarSelectParticipantes() {
     select.appendChild(opt);
   });
 }
+atualizarSelectParticipantes();
 
-// Adicionar despesa
+// --- Checkboxes de quem participou da despesa ---
+function atualizarQuemParticipou() {
+  const div = document.getElementById('who-participated');
+  div.innerHTML = 'Quem participou dessa despesa:<br>';
+  participantes.forEach(nome => {
+    const id = 'chk-' + nome;
+    const chk = document.createElement('input');
+    chk.type = 'checkbox';
+    chk.id = id;
+    chk.value = nome;
+    chk.checked = true;
+    div.appendChild(chk);
+    const lbl = document.createElement('label');
+    lbl.setAttribute('for', id);
+    lbl.textContent = ' ' + nome + ' ';
+    div.appendChild(lbl);
+  });
+}
+atualizarQuemParticipou();
+
+// --- Adicionar despesa ---
 document.getElementById('add-expense').onclick = function () {
   if (participantes.length === 0) {
     alert('Adicione ao menos um participante antes de lançar despesas!');
@@ -91,24 +138,34 @@ document.getElementById('add-expense').onclick = function () {
   const desc = document.getElementById('expense-desc').value.trim();
   const valor = parseFloat(document.getElementById('expense-value').value);
   const pagante = document.getElementById('expense-participant').value;
-  if (!desc || isNaN(valor) || valor <= 0 || !pagante) return;
+  // Quem participou
+  const env = [];
+  document.querySelectorAll('#who-participated input[type="checkbox"]').forEach(chk => {
+    if (chk.checked) env.push(chk.value);
+  });
 
-  despesas.push({ desc, valor, pagante });
+  if (!desc || isNaN(valor) || valor <= 0 || !pagante || env.length === 0) return;
+
+  despesas.push({ desc, valor, pagante, envolvidos: env });
   atualizarListaDespesas();
   atualizarResumo();
 
   document.getElementById('expense-desc').value = '';
   document.getElementById('expense-value').value = '';
 };
+atualizarListaDespesas();
 
+// --- Lista de despesas ---
 function atualizarListaDespesas() {
   const ul = document.getElementById('expenses-list');
   ul.innerHTML = '';
   despesas.forEach((d, idx) => {
     const li = document.createElement('li');
-    li.textContent = `${d.desc} - R$ ${d.valor.toFixed(2)} (Pagou: ${d.pagante}) `;
+    li.innerHTML = `<strong>${d.pagante}</strong> pagou R$ ${d.valor.toFixed(2)} (${d.desc})<br>` +
+      `<span style="font-size:0.97em;color:#555;">Dividido entre: ${d.envolvidos.join(', ')}</span> `;
     const btn = document.createElement('button');
     btn.textContent = 'Remover';
+    btn.className = 'green-btn';
     btn.onclick = () => {
       despesas.splice(idx, 1);
       atualizarListaDespesas();
@@ -119,35 +176,65 @@ function atualizarListaDespesas() {
   });
 }
 
-// Resumo de quanto cada um deve
+// --- Resumo da divisão das despesas e acertos ---
 function atualizarResumo() {
+  // Divisão das despesas por participante
   const div = document.getElementById('summary-output');
   if (participantes.length === 0 || despesas.length === 0) {
-    div.textContent = '';
+    div.innerHTML = '';
+    document.getElementById('settle-summary').innerHTML = '';
     return;
   }
 
-  // Total gasto e quanto cada um deveria pagar
-  const total = despesas.reduce((soma, d) => soma + d.valor, 0);
-  const porPessoa = total / participantes.length;
-
-  // Quanto cada um já pagou
+  // Cálculo: quanto cada um pagou e quanto deveria pagar
   const pagos = {};
-  participantes.forEach(nome => pagos[nome] = 0);
-  despesas.forEach(d => pagos[d.pagante] += d.valor);
+  const deve = {};
+  participantes.forEach(nome => { pagos[nome] = 0; deve[nome] = 0; });
 
-  let html = `<p>Total gasto: <strong>R$ ${total.toFixed(2)}</strong> &mdash; Cada um paga: <strong>R$ ${porPessoa.toFixed(2)}</strong></p><ul>`;
-  participantes.forEach(nome => {
-    const saldo = pagos[nome] - porPessoa;
-    let status = '';
-    if (saldo > 0.01) status = `deve receber <strong>R$ ${saldo.toFixed(2)}</strong>`;
-    else if (saldo < -0.01) status = `deve pagar <strong>R$ ${(-saldo).toFixed(2)}</strong>`;
-    else status = `<strong>acertado</strong>`;
-    html += `<li>${nome}: ${status}</li>`;
+  despesas.forEach(d => {
+    pagos[d.pagante] += d.valor;
+    const valorPorPessoa = d.valor / d.envolvidos.length;
+    d.envolvidos.forEach(nome => {
+      deve[nome] += valorPorPessoa;
+    });
   });
-  html += '</ul>';
+
+  let html = '';
+  participantes.forEach(nome => {
+    const saldo = pagos[nome] - deve[nome];
+    let status = '';
+    if (saldo > 0.01) status = `tem a receber`;
+    else if (saldo < -0.01) status = `deve`;
+    else status = `acertado`;
+    html += `${nome}: R$ ${(saldo).toFixed(2)} ${status}<br>`;
+  });
   div.innerHTML = html;
+
+  // Resumo de acertos (quem paga quem)
+  const settleDiv = document.getElementById('settle-summary');
+  // Lista de saldos
+  const saldos = participantes.map(nome => ({ nome, saldo: +(pagos[nome] - deve[nome]).toFixed(2) }));
+  // Separar credores e devedores
+  const credores = saldos.filter(s => s.saldo > 0.01).sort((a, b) => b.saldo - a.saldo);
+  const devedores = saldos.filter(s => s.saldo < -0.01).sort((a, b) => a.saldo - b.saldo);
+  let resumo = '';
+  let i = 0, j = 0;
+  while (i < devedores.length && j < credores.length) {
+    let dev = devedores[i], cred = credores[j];
+    const valor = Math.min(-dev.saldo, cred.saldo);
+    if (valor > 0.009) {
+      resumo += `${dev.nome} deve pagar R$ ${valor.toFixed(2)} para ${cred.nome}<br>`;
+      dev.saldo += valor;
+      cred.saldo -= valor;
+      if (Math.abs(dev.saldo) < 0.01) i++;
+      if (Math.abs(cred.saldo) < 0.01) j++;
+    } else {
+      i++;
+    }
+  }
+  settleDiv.innerHTML = resumo;
 }
+atualizarResumo();
 
 // Tema escuro/claro (opcional)
 document.getElementById('toggle-theme').onclick = function () {

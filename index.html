@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Painel do Churrasco</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
   <header>
@@ -14,58 +14,43 @@
 
   <main>
     <section id="event-section">
+      <h2>Evento</h2>
       <input type="text" id="event-name" placeholder="Nome do churrasco">
-      <input type="date" id="event-date" title="Data do evento">
+      <input type="date" id="event-date" placeholder="Data do evento">
+      <input type="time" id="event-time" placeholder="Horário do evento">
+      <input type="text" id="event-location" placeholder="Local do evento">
       <input type="text" id="event-desc" placeholder="Descrição do evento">
-      <button onclick="criarEvento()">Criar Evento</button>
-      <button onclick="importData()" title="Importar arquivo JSON">📥 Importar</button>
-      <button onclick="exportData()" title="Exportar dados para arquivo JSON">📤 Exportar</button>
-      <input type="file" id="import-input" accept=".json" style="display:none">
-      <ul id="event-list"></ul>
+      <div id="weekday-output" style="margin-top:8px;color:#2d3748;font-weight:bold"></div>
+      <button id="save-event">Salvar Evento</button>
     </section>
 
-    <section id="main-panel" style="display:none;">
-      <button onclick="backToEvents()" class="back-btn">⬅ Voltar aos Eventos</button>
-      <h2 id="current-event-name"></h2>
-      <div class="event-meta">
-        <span id="current-event-date"></span> | 
-        <span id="current-event-desc"></span>
-      </div>
-      <div class="grid">
-        <div>
-          <h3>Participantes</h3>
-          <input type="text" id="participant-name" placeholder="Nome do participante">
-          <button onclick="addParticipant()">Adicionar</button>
-          <ul id="participant-list"></ul>
-        </div>
-        <div>
-          <h3>Despesas</h3>
-          <input type="text" id="expense-desc" placeholder="Descrição">
-          <input type="number" id="expense-value" placeholder="Valor" min="0">
-          <select id="expense-payer"></select>
-          <div id="expense-sharers-container">
-            <!-- Checkboxes dos participantes serão inseridos aqui -->
-          </div>
-          <button onclick="addExpense()">Adicionar Despesa</button>
-          <ul id="expense-list"></ul>
-        </div>
-      </div>
-      <div class="grid">
-        <div>
-          <h3>Divisão das Despesas</h3>
-          <ul id="balance-list"></ul>
-        </div>
-        <div>
-          <h3>Resumo de Acertos</h3>
-          <ul id="settlement-list"></ul>
-        </div>
-      </div>
+    <section id="participants-section">
+      <h2>Participantes</h2>
+      <!-- Área para adicionar/remover participantes -->
+      <input type="text" id="participant-name" placeholder="Nome do participante">
+      <button id="add-participant">Adicionar Participante</button>
+      <ul id="participants-list"></ul>
+    </section>
+
+    <section id="expenses-section">
+      <h2>Despesas</h2>
+      <!-- Área para adicionar/remover despesas -->
+      <input type="text" id="expense-desc" placeholder="Descrição da despesa">
+      <input type="number" id="expense-value" placeholder="Valor (R$)" step="0.01" min="0">
+      <select id="expense-participant">
+        <!-- Opções serão preenchidas via JS -->
+      </select>
+      <button id="add-expense">Adicionar Despesa</button>
+      <ul id="expenses-list"></ul>
+    </section>
+
+    <section id="summary-section">
+      <h2>Resumo</h2>
+      <!-- Área para mostrar quanto cada um deve -->
+      <div id="summary-output"></div>
     </section>
   </main>
 
-  <footer>
-    <span>Feito com ❤️ para churrascos</span>
-  </footer>
   <script src="app.js"></script>
 </body>
 </html>

@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Teste",
+    "date": "2025-09-10",
+    "desc": "Rua",
+    "participants": [
+      "Alexandre",
+      "Mauro"
+    ],
+    "expenses": [
+      {
+        "desc": "Carne",
+        "value": 50,
+        "payer": "Alexandre",
+        "sharers": [
+          "Alexandre"
+        ]
+      },
+      {
+        "desc": "Carne",
+        "value": 50,
+        "payer": "Alexandre",
+        "sharers": [
+          "Alexandre",
+          "Mauro"
+        ]
+      }
+    ]
+  }
+]

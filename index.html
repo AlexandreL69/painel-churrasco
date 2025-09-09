@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Painel do Churrasco</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Painel do Churrasco</h1>
+    <button id="toggle-theme" title="Alternar tema">🌙</button>
+  </header>
+
+  <main>
+    <section id="event-section">
+      <input type="text" id="event-name" placeholder="Nome do churrasco">
+      <input type="date" id="event-date" title="Data do evento">
+      <input type="text" id="event-desc" placeholder="Descrição do evento">
+      <button onclick="createEvent()">Criar Evento</button>
+      <button onclick="importData()" title="Importar arquivo JSON">📥 Importar</button>
+      <button onclick="exportData()" title="Exportar dados para arquivo JSON">📤 Exportar</button>
+      <input type="file" id="import-input" accept=".json" style="display:none">
+      <ul id="event-list"></ul>
+    </section>
+
+    <section id="main-panel" style="display:none;">
+      <button onclick="backToEvents()" class="back-btn">⬅ Voltar aos Eventos</button>
+      <h2 id="current-event-name"></h2>
+      <div class="event-meta">
+        <span id="current-event-date"></span> | 
+        <span id="current-event-desc"></span>
+      </div>
+      <div class="grid">
+        <div>
+          <h3>Participantes</h3>
+          <input type="text" id="participant-name" placeholder="Nome do participante">
+          <button onclick="addParticipant()">Adicionar</button>
+          <ul id="participant-list"></ul>
+        </div>
+        <div>
+          <h3>Despesas</h3>
+          <input type="text" id="expense-desc" placeholder="Descrição">
+          <input type="number" id="expense-value" placeholder="Valor" min="0">
+          <select id="expense-payer"></select>
+          <div id="expense-sharers-container">
+            <!-- Checkboxes dos participantes serão inseridos aqui -->
+          </div>
+          <button onclick="addExpense()">Adicionar Despesa</button>
+          <ul id="expense-list"></ul>
+        </div>
+      </div>
+      <div class="grid">
+        <div>
+          <h3>Divisão das Despesas</h3>
+          <ul id="balance-list"></ul>
+        </div>
+        <div>
+          <h3>Resumo de Acertos</h3>
+          <ul id="settlement-list"></ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Feito com ❤️ para churrascos</span>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,14 +1,16 @@
-// Utilitário para pegar o dia da semana em português
-function getDiaSemana(dataStr) {
-  const dias = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
-  const data = new Date(dataStr);
-  if (isNaN(data)) return "";
-  return dias[data.getDay()];
+// Utilitário para pegar o dia da semana em português, considerando o fuso corretamente
+function getDiaSemanaLocal(dateValue) {
+  if (!dateValue) return "";
+  const [ano, mes, dia] = dateValue.split('-').map(Number);
+  // mês em JS começa do zero!
+  const data = new Date(ano, mes - 1, dia);
+  const diasSemana = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+  return diasSemana[data.getDay()];
 }
 
 // Atualiza o campo do dia da semana ao escolher a data
 document.getElementById('event-date').addEventListener('change', function () {
-  const diaSemana = getDiaSemana(this.value);
+  const diaSemana = getDiaSemanaLocal(this.value);
   document.getElementById('weekday-output').textContent = diaSemana ? `Dia da semana: ${diaSemana}` : '';
 });
 
@@ -33,7 +35,7 @@ document.getElementById('save-event').onclick = function () {
   evento.local = document.getElementById('event-location').value;
   evento.descricao = document.getElementById('event-desc').value;
 
-  alert(`Evento salvo!\n\n${evento.nome}\n${evento.data} (${getDiaSemana(evento.data)})\n${evento.horario}\n${evento.local}\n${evento.descricao}`);
+  alert(`Evento salvo!\n\n${evento.nome}\n${evento.data} (${getDiaSemanaLocal(evento.data)})\n${evento.horario}\n${evento.local}\n${evento.descricao}`);
 };
 
 // Adicionar participante
